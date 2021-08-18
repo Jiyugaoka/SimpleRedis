@@ -17,7 +17,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisConfig {
 
-    @Bean
+    @Bean("userRedis")
     public RedisTemplate<String, User> userRedisTemplate(RedisConnectionFactory factory){
         RedisTemplate<String, User> template = new RedisTemplate<>();
         //关联
@@ -29,13 +29,14 @@ public class RedisConfig {
         return template;
     }
 
-    @Bean
-    public RedisTemplate<String, Object> objectRedisTemplate(RedisConnectionFactory connectionFactory)
+    @Bean("objectRedis")
+    @SuppressWarnings(value = { "unchecked", "rawtypes" })
+    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory)
     {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
-        FastJson2JsonRedisSerializer<Object> serializer = new FastJson2JsonRedisSerializer<>(Object.class);
+        FastJson2JsonRedisSerializer serializer = new FastJson2JsonRedisSerializer(Object.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);

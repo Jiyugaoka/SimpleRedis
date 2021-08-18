@@ -14,6 +14,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
+
+    @SuppressWarnings("unused")
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
