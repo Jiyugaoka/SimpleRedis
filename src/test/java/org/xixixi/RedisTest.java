@@ -3,6 +3,7 @@ package org.xixixi;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,31 +17,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class RedisTest
 {
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    @Qualifier("userRedis")
+    private RedisTemplate userRedisTemplate;
 
     @Autowired
-    private RedisTemplate<String, User> userRedisTemplate;
-
-    @Autowired
-    private RedisTemplate<String, Object> objectRedisTemplate;
+    private RedisUtils redisUtils;
 
     @Test
     public void simpleTest()
     {
-        redisTemplate.opsForValue().set("myKey", "ejg");
-        System.out.println(redisTemplate.opsForValue().get("myKey"));
-
-        userRedisTemplate.opsForValue().set("ejg",
-                new User() {{setName("ejg");
-                    setGender("male");
-                    setAge(18);}});
         System.out.println(userRedisTemplate.opsForValue().get("ejg").toString());
-//        有问题待修复
-//        objectRedisTemplate.opsForValue().set("xixixi",
-//                new User() {{setName("xixixi");
-//                    setGender("male");
-//                    setAge(20);}});
-//        User xixixi = (User) objectRedisTemplate.opsForValue().get("xixixi");
-//        System.out.println(xixixi.toString());
+
+        System.out.println(redisUtils.<User>getCacheObject("userObject"));
     }
 }
